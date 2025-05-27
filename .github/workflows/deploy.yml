@@ -27,13 +27,23 @@ jobs:
       - name: Install dependencies 📦
         run: npm ci # 'npm ci' is generally faster and more reliable for CI
 
+      - name: Check for @vitejs/plugin-react # DEBUGGING STEP
+        run: |
+          echo "Listing node_modules/@vitejs..."
+          ls -la node_modules/@vitejs || echo "@vitejs directory not found or ls failed"
+          echo "Checking for plugin-react specifically..."
+          if [ -d "node_modules/@vitejs/plugin-react" ]; then
+            echo "@vitejs/plugin-react IS PRESENT."
+          else
+            echo "@vitejs/plugin-react IS MISSING."
+          fi
+          echo "Listing direct contents of node_modules (first 20 entries)..."
+          ls -la node_modules | head -n 20 || echo "node_modules directory not found or ls failed"
+
       - name: Build application 🛠️
         # This uses the "build" script from your package.json: "vite build"
         run: npm run build
         # If your vite.config.js already sets the base, you don't need to pass it here.
-        # If you didn't set 'base' in vite.config.js, you could try:
-        # run: npm run build -- --base=./albanian-cadastre-digitalization-roadmap/
-        # But setting it in vite.config.js is cleaner.
 
       - name: Setup Pages 📃
         uses: actions/configure-pages@v5
